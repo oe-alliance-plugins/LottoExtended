@@ -1,0 +1,18 @@
+{
+  "branch": "main",
+  "depends_recipe": "",
+  "description_control": "Eigene Lottotipps bequem auf dem TV abrufen und auswerten",
+  "description_recipe": "Eigene Lottotipps bequem auf dem TV abrufen und auswerten",
+  "history_source_dir": "LottoExtended",
+  "internal_package_name": "enigma2-plugin-extensions-lottoextended",
+  "module_dir_name": "LottoExtended",
+  "output_subdir": "LottoExtended",
+  "package_name": "enigma2-plugin-extensions-lottoextended",
+  "plugin_src_rel": "LottoExtended",
+  "python_package": "LottoExtended",
+  "rdepends_recipe": "",
+  "replaces": "",
+  "repo_name": "LottoExtended",
+  "rrecommends": "",
+  "rreplaces": ""
+}
