@@ -1,11 +1,11 @@
-#===============================================================================
+# ===============================================================================
 # LottoExtended Plugin by apostrophe 2009
 #
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-#===============================================================================
+# ===============================================================================
 
 from datetime import date, timedelta
 from Components.ActionMap import ActionMap
@@ -20,7 +20,7 @@ from .LottoTipp import readSkin
 from . import _
 
 SYSTEMTAB = (  # seit 4.5.2013 mit 9 gewinnklassen
-	#+6 aus 7 neu							#pos	anzahl richtige klasse
+	# +6 aus 7 neu							#pos	anzahl richtige klasse
 	((5, 0, 0, 0, 0, 0, 0, 0, 0),			# 0		2+
 	(0, 4, 0, 0, 0, 0, 0, 0, 0),			# 1		3
 	(3, 0, 4, 0, 0, 0, 0, 0, 0),			# 2		3+
@@ -30,9 +30,9 @@ SYSTEMTAB = (  # seit 4.5.2013 mit 9 gewinnklassen
 	(0, 0, 0, 0, 5, 0, 2, 0, 0),			# 6		5+
 	(0, 0, 0, 0, 0, 6, 0, 1, 0),			# 7		6
 	(0, 0, 0, 0, 0, 0, 6, 0, 1)),			# 8		6+
-#	 9	8  7  6  5  4  3  2  1     = anzahl der gewinne in klasse
-#	 2+	3  3+ 4  4+ 5  5+ 6  6+sz  = anzahl richtige
-	#+6 aus 8 neu
+# 9	8  7  6  5  4  3  2  1     = anzahl der gewinne in klasse
+# 2+	3  3+ 4  4+ 5  5+ 6  6+sz  = anzahl richtige
+	# +6 aus 8 neu
 	((15, 0, 0, 0, 0, 0, 0, 0, 0),
 	(0, 10, 0, 0, 0, 0, 0, 0, 0),
 	(15, 0, 10, 0, 0, 0, 0, 0, 0),
@@ -42,7 +42,7 @@ SYSTEMTAB = (  # seit 4.5.2013 mit 9 gewinnklassen
 	(0, 0, 10, 0, 15, 0, 3, 0, 0),
 	(0, 0, 0, 15, 0, 12, 0, 1, 0),
 	(0, 0, 0, 0, 15, 0, 12, 0, 1)),
-	#+6 aus 9 neu
+	# +6 aus 9 neu
 	((35, 0, 0, 0, 0, 0, 0, 0, 0),
 	(0, 20, 0, 0, 0, 0, 0, 0, 0),
 	(45, 0, 20, 0, 0, 0, 0, 0, 0),
@@ -52,7 +52,7 @@ SYSTEMTAB = (  # seit 4.5.2013 mit 9 gewinnklassen
 	(10, 0, 40, 0, 30, 0, 4, 0, 0),
 	(0, 20, 0, 45, 0, 18, 0, 1, 0),
 	(0, 0, 20, 0, 45, 0, 18, 0, 1)),
-	#+6 aus 10 neu
+	# +6 aus 10 neu
 	((70, 0, 0, 0, 0, 0, 0, 0, 0),
 	(0, 35, 0, 0, 0, 0, 0, 0, 0),
 	(105, 0, 35, 0, 0, 0, 0, 0, 0),
@@ -62,7 +62,7 @@ SYSTEMTAB = (  # seit 4.5.2013 mit 9 gewinnklassen
 	(50, 0, 100, 0, 50, 0, 5, 0, 0),
 	(0, 80, 0, 90, 0, 24, 0, 1, 0),
 	(15, 0, 80, 0, 90, 0, 24, 0, 1)),
-	#+6 aus 11 neu
+	# +6 aus 11 neu
 	((126, 0, 0, 0, 0, 0, 0, 0, 0),
 	(0, 56, 0, 0, 0, 0, 0, 0, 0),
 	(210, 0, 56, 0, 0, 0, 0, 0, 0),
@@ -72,7 +72,7 @@ SYSTEMTAB = (  # seit 4.5.2013 mit 9 gewinnklassen
 	(150, 0, 200, 0, 75, 0, 6, 0, 0),
 	(0, 200, 0, 150, 0, 30, 0, 1, 0),
 	(75, 0, 200, 0, 150, 0, 30, 0, 1)),
-	#+6 aus 12 neu
+	# +6 aus 12 neu
 	((210, 0, 0, 0, 0, 0, 0, 0, 0),
 	(0, 84, 0, 0, 0, 0, 0, 0, 0),
 	(378, 0, 84, 0, 0, 0, 0, 0, 0),
@@ -144,16 +144,16 @@ class GewinnListScreen(Screen):
 			"green": self.keyDetail,
 			"yellow": self.keyDelete,
 			"blue": self.nextDraw,
-#			 "blue": self.changeZiehung,
+# "blue": self.changeZiehung,
 			"up": self.up,
 			"down": self.down,
 			"left": self.left,
 			"right": self.down,
 			"ok": self.keyEditTipp
-#			 "ok": self.keyNoAction
+# "ok": self.keyNoAction
 		}, -1)
 		self.onLayoutFinish.append(self.newDrawing)
-		#self.newDrawing(currdate)
+		# self.newDrawing(currdate)
 
 	def newDrawing(self, datum=None):
 		if datum is not None:
@@ -465,7 +465,7 @@ class GewinnDetailList(List):
 			else:
 				res[16] = " keine Teilnahme"
 		if participation == 1:
-			#Spiel77
+			# Spiel77
 			res = ["" for x in range(18)]
 			res[0] = " Spiel 77: "
 			spiel77super6(self.tipp.getActSpiel77(), self.tipp.losnummer(), self.tipp.spiel77treffer)

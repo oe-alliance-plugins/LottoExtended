@@ -1,11 +1,11 @@
-#===============================================================================
+# ===============================================================================
 # LottoExtended Plugin by apostrophe 2009
 #
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-#===============================================================================
+# ===============================================================================
 
 from datetime import date, timedelta
 from time import mktime
@@ -107,8 +107,8 @@ class LottoConfigDateTime(ConfigDateTime):
 					increment = 9 - cur_day
 			newDate = fDate + timedelta(days=increment)
 			self.value = int(mktime(newDate.timetuple()))
-#		elif key == KEY_HOME or key == KEY_END:
-#			self.value = self.default
+# elif key == KEY_HOME or key == KEY_END:
+# self.value = self.default
 
 	def extendDraw(self, weeks):
 		days = int(weeks) * 7

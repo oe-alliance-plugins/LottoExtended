@@ -1,11 +1,11 @@
-#===============================================================================
+# ===============================================================================
 # LottoExtended Plugin by apostrophe 2009
 #
 # This is free software; you can redistribute it and/or modify it under
 # the terms of the GNU General Public License as published by the Free
 # Software Foundation; either version 2, or (at your option) any later
 # version.
-#===============================================================================
+# ===============================================================================
 
 from datetime import date, datetime, timedelta
 from json import loads
@@ -94,34 +94,34 @@ class Ziehung:
 		self.s6quote = str2floatQuotes(self.strS6Quote)
 
 	def richtigeLotto(self, spiel):
-		#print"[Ziehung] richtigeLotto"
+		# print"[Ziehung] richtigeLotto"
 		return [i for i in spiel if i in self.lotto]
 
 	def richtigeS6(self, intLosnummer):
-		#print"[Ziehung] richtigeS6"
+		# print"[Ziehung] richtigeS6"
 		return len(search('0*$', str(1000000 + int(self.strSuper6) - intLosnummer % 1000000)).group(0))
 
 	def richtigeS77(self, intLosnummer):
-		#print"[Ziehung] richtigeS77"
+		# print"[Ziehung] richtigeS77"
 		return len(search('0*$', str(10000000 + int(self.strSpiel77) - intLosnummer)).group(0))
 
 	def richtigeSuperzahl(self, strLosnummer):
-		#print"[Ziehung] richtigeSuperzahl"
+		# print"[Ziehung] richtigeSuperzahl"
 		return int(strLosnummer[-1:]) == int(self.strSuperzahl)
 
 
 class Ziehungen:
 	def __init__(self):
-		#print"[Ziehungen] __init__"
-		#self.url= "http://xs/webdav/LottoMai.htm"
-		#self.url= "https://info.lotto-brandenburg.de/index.php?id=210" #05.12.2012
-		#self.url = "https://www.lotto-brandenburg.de/webapp/app" #getDrawResults"
+		# print"[Ziehungen] __init__"
+		# self.url= "http://xs/webdav/LottoMai.htm"
+		# self.url= "https://info.lotto-brandenburg.de/index.php?id=210" #05.12.2012
+		# self.url = "https://www.lotto-brandenburg.de/webapp/app" #getDrawResults"
 		self.url = "https://www.lotto-brandenburg.de/app"  # getDrawResults"
 		self.drawings = {}
 		self.highDate = date(1970, 1, 1)
 
 	def download(self, datum, callback, errback):
-		#print"[Ziehungen_download]"#
+		# print"[Ziehungen_download]"#
 		if datum is None:
 			datum = self.getLastDrawDate()
 		if datum in self.drawings:
@@ -144,7 +144,7 @@ class Ziehungen:
 				fail(error)
 
 	def getLastDrawDate(self, not_today=False):
-		#print"[Ziehung - getLastDrawDate]"
+		# print"[Ziehung - getLastDrawDate]"
 		today = datetime.today()
 		if today.weekday() in (0, 1, 6):  # mo, di, so
 			days = (today.weekday() + 7) % 12 % 5
@@ -162,17 +162,17 @@ class Ziehungen:
 		return today.date() + timedelta(days=-days)
 
 	def parsingFailed(self, datum, errback):
-		#print"[Ziehungen_parsingFailed]"
+		# print"[Ziehungen_parsingFailed]"
 		if errback:
 			errback('Fehler beim Parsen der Website', "")
 
 	def downloadFailed(self, output):
-		#print"[Ziehungen_downloadfailed]" #, output
+		# print"[Ziehungen_downloadfailed]" #, output
 		if self.errback:
 			self.errback("Fehler beim Aufruf der Website:", output)
 
 	def downloadOK(self, output):
-		#print"[Ziehungen_downloadOK] %s" % datum
+		# print"[Ziehungen_downloadOK] %s" % datum
 		if output == "[]" and self.zdatum == date.today():  # neue ziehung noch nicht verf�gbar
 			last_date = self.getLastDrawDate(not_today=True)
 			self.download(last_date, self.callback, self.errback)
@@ -211,7 +211,7 @@ class Ziehungen:
 						elotto = einsatz
 					elif typ == "SUPER_6":
 						s6 = ''.join(lottery["winningDigits"])
-						#qs6 = quotes
+						# qs6 = quotes
 						ws6 = winners
 						es6 = einsatz
 					else:  # "GAME_77":
@@ -282,11 +282,11 @@ class LottoMain(Screen):
 		self.ziehungen = Ziehungen()
 		self.retry_auswertung = False
 		self.currDate = self.prevDate = self.nextDate = date(1970, 1, 1)
-		#self.download(None)
+		# self.download(None)
 		self.onLayoutFinish.append(self.download)
 
 	def download(self, datum=None):
-		#print"[LottoMain download]"
+		# print"[LottoMain download]"
 		if datum is not None and datum in self.ziehungen.drawings:
 			self.dispDraw(datum)
 		else:
@@ -294,7 +294,7 @@ class LottoMain(Screen):
 			self.ziehungen.download(datum, self.downloadOK, self.downloadFailed)
 
 	def downloadFailed(self, text, output):
-		#print"[downloadFailed]"
+		# print"[downloadFailed]"
 		self.retry_auswertung = False
 		self["statuslabel"].setText(text)
 		if output:
@@ -310,7 +310,7 @@ class LottoMain(Screen):
 		self["quotlist"].setList([])
 
 	def downloadOK(self, datum):
-		#print"[downloadOK]"
+		# print"[downloadOK]"
 		self.dispDraw(datum)
 		self["key_green"].text = "Auswertung"
 		if self.retry_auswertung:
@@ -326,7 +326,7 @@ class LottoMain(Screen):
 			self.session.openWithCallback(self.gewinnlistClosed, GewinnListScreen, self.currDate, self.ziehungen)
 
 	def gewinnlistClosed(self, trueFalse, datum):
-		#print"[Lotto] gewinnlistClosed"
+		# print"[Lotto] gewinnlistClosed"
 		if datum == date(1970, 1, 1):
 			self.currDate = self.prevDate = self.nextDate = date(1970, 1, 1)
 			self["key_blue"].text = ""
@@ -342,7 +342,7 @@ class LottoMain(Screen):
 		self.session.openWithCallback(self.tipplistClosed, LottoTippListScreen)
 
 	def tipplistClosed(self, trueFalse):
-		#print"[Lotto] tipplistClosed"
+		# print"[Lotto] tipplistClosed"
 		pass
 
 	def down(self):
@@ -370,7 +370,7 @@ class LottoMain(Screen):
 		self.download(self.nextDate)
 
 	def dispDraw(self, datum):
-		#print"[dispDraw]"
+		# print"[dispDraw]"
 		self.currDate = datum
 		self.setDates()
 		ziehung = self.ziehungen.drawings[self.currDate]
@@ -418,7 +418,7 @@ class LottoMain(Screen):
 		self["quotlist"].setList(xlist)
 
 	def setDates(self):
-		#print"[setDates]"
+		# print"[setDates]"
 		if self.currDate.weekday() == 5:  # Saturday
 			nxt = 4
 			prv = -3
