@@ -1,4 +1,3 @@
-#-*- coding: utf-8 -*-
 #===============================================================================
 # LottoExtended Plugin by apostrophe 2009
 #
@@ -22,6 +21,8 @@ from Screens.Screen import Screen
 from .LottoTippList import LottoTippListScreen
 from .GewinnList import GewinnListScreen, num2FormStr
 from .LottoTipp import readSkin
+from . import _
+
 
 lotto_pluginversion = '16.01.2023'
 
@@ -44,7 +45,7 @@ def date2ymd(date):
 	return date.strftime("%Y-%m-%d")
 
 
-class Ziehung():
+class Ziehung:
 	def __init__(self, datum, drawing):
 		print("*********drawing:", drawing)
 		self.datum = datum
@@ -66,14 +67,14 @@ class Ziehung():
 		if "es6" in drawing:
 			self.strSuper6E = str(drawing["es6"])
 		try:
-			x = drawing["s6"]
-		except:
+			drawing["s6"]
+		except Exception:
 			self.strSuper6 = '??????'
 		else:
 			self.strSuper6 = drawing["s6"]
 		try:
-			x = drawing["s77"]
-		except:
+			drawing["s77"]
+		except Exception:
 			self.strSpiel77 = '???????'
 		else:
 			self.strSpiel77 = drawing["s77"]
@@ -109,7 +110,7 @@ class Ziehung():
 		return int(strLosnummer[-1:]) == int(self.strSuperzahl)
 
 
-class Ziehungen():
+class Ziehungen:
 	def __init__(self):
 		#print"[Ziehungen] __init__"
 		#self.url= "http://xs/webdav/LottoMai.htm"
@@ -126,7 +127,7 @@ class Ziehungen():
 		if datum in self.drawings:
 			callback(datum)
 			return
-		url = "%s/getDrawResults?gameType=LOTTO&date=%s&useTipHighlighting=false" % (self.url, datum.strftime("%Y-%m-%d"))
+		url = "{}/getDrawResults?gameType=LOTTO&date={}&useTipHighlighting=false".format(self.url, datum.strftime("%Y-%m-%d"))
 		self.zdatum = datum
 		self.callback = callback
 		self.errback = errback
@@ -189,7 +190,7 @@ class Ziehungen():
 					if lottery["totalStake"] != "None":
 						try:
 							einsatz = num2FormStr(float(lottery["totalStake"]) / 100)
-						except:
+						except Exception:
 							einsatz = None
 					if lottery["winningClasses"]:
 						returned[typ][1] = 1
@@ -218,7 +219,7 @@ class Ziehungen():
 						qs77 = quotes
 						ws77 = winners
 						es77 = einsatz
-		except:
+		except Exception:
 			self.parsingFailed(self.zdatum, self.errback)
 			return
 		for i in returned:  # got results from all lotteries?
@@ -258,7 +259,7 @@ class LottoMain(Screen):
 		self["key_yellow"] = Button("Manager")
 		self["key_blue"] = Button()
 		self["statuslabel"] = Label()
-		self["version"] = Label("Version %s" % lotto_pluginversion)
+		self["version"] = Label(f"Version {lotto_pluginversion}")
 		self["spiel77"] = Label("")
 		self["super6"] = Label("")
 		self["auslosung"] = Label("")
@@ -299,7 +300,7 @@ class LottoMain(Screen):
 		if output:
 			try:
 				self["details"].setText(str(output))
-			except:
+			except Exception:
 				self["details"].setText(text)
 				pass
 		self.currDate = self.prevDate = self.nextDate = date(1970, 1, 1)
@@ -381,14 +382,14 @@ class LottoMain(Screen):
 			tag = 'Sa'
 		else:
 			tag = 'Mi'
-		self["auslosung"].text = " Auslosung vom %s, %s" % (tag, ziehung.datum.strftime("%d. %B %Y"))
+		self["auslosung"].text = " Auslosung vom {}, {}".format(tag, ziehung.datum.strftime("%d. %B %Y"))
 		self["spiel77"].text = "  ".join(ziehung.strSpiel77)
 		self["super6"].text = "  ".join(ziehung.strSuper6)
 		self["displotto"].text = " - ".join(ziehung.strLotto) + ' / ' + ziehung.strSuperzahl
 		xlist = []
 		list = ["" for i in range(11)]
 		if ziehung.strLottoQuote is None:
-			self["statuslabel"].setText("Ziehung vom %s, %s - Die Gewinnquoten stehen noch nicht fest." % (tag, self.currDate.strftime("%d.%m.%Y")))
+			self["statuslabel"].setText("Ziehung vom {}, {} - Die Gewinnquoten stehen noch nicht fest.".format(tag, self.currDate.strftime("%d.%m.%Y")))
 			xlist.append(tuple(list))
 			self["quotlist"].index = 0
 		else:
@@ -396,24 +397,24 @@ class LottoMain(Screen):
 				j = str(i + 1)
 				list[0] = j
 				list[1] = ziehung.strLottoWinners[i]
-				list[2] = "%s €" % ziehung.strLottoQuote[i]
+				list[2] = f"{ziehung.strLottoQuote[i]} €"
 				if i < 7:
 					list[3] = ziehung.strS77Winners[i]
-					list[4] = "%s €" % ziehung.strS77Quote[i]
+					list[4] = f"{ziehung.strS77Quote[i]} €"
 				if i < 6:
 					list[5] = ziehung.strS6Winners[i]
-					list[6] = "%s €" % ziehung.strS6Quote[i]
+					list[6] = f"{ziehung.strS6Quote[i]} €"
 				xlist.append(tuple(list))
 				list = ["" for i in range(11)]
 			list[0] = "Einsatz:"
 			if ziehung.strLotto:
-				list[7] = "%s €" % ziehung.strLottoE
+				list[7] = f"{ziehung.strLottoE} €"
 			if ziehung.strSpiel77:
-				list[8] = "%s €" % ziehung.strSpiel77E
+				list[8] = f"{ziehung.strSpiel77E} €"
 			if ziehung.strSuper6:
-				list[9] = "%s €" % ziehung.strSuper6E
+				list[9] = f"{ziehung.strSuper6E} €"
 			xlist.append(tuple(list))
-			self["statuslabel"].setText("Ziehung vom %s, %s" % (tag, self.currDate.strftime("%d.%m.%Y")))
+			self["statuslabel"].setText("Ziehung vom {}, {}".format(tag, self.currDate.strftime("%d.%m.%Y")))
 		self["quotlist"].setList(xlist)
 
 	def setDates(self):

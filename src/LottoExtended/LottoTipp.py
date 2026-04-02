@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #===============================================================================
 # LottoExtended Plugin by apostrophe 2009
 #
@@ -9,8 +8,8 @@
 #===============================================================================
 
 from datetime import date, timedelta
-from enigma import getDesktop
 from xml.etree.ElementTree import parse, tostring
+from enigma import getDesktop
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 
 PLUGINPATH = resolveFilename(SCOPE_PLUGINS) + 'Extensions/LottoExtended/'
@@ -25,7 +24,7 @@ else:
 def readSkin(skin):
 	skintext = ""
 	try:
-		with open(SKINFILE, "r") as fd:
+		with open(SKINFILE) as fd:
 			try:
 				domSkin = parse(fd).getroot()
 				for element in domSkin:
@@ -33,13 +32,13 @@ def readSkin(skin):
 						skintext = tostring(element).decode()
 						break
 			except Exception as err:
-				print("[Skin] Error: Unable to parse skin data in '%s' - '%s'!" % (SKINFILE, err))
+				print(f"[Skin] Error: Unable to parse skin data in '{SKINFILE}' - '{err}'!")
 	except OSError as err:
-		print("[Skin] Error: Unexpected error opening skin file '%s'! (%s)" % (SKINFILE, err))
+		print(f"[Skin] Error: Unexpected error opening skin file '{SKINFILE}'! '{err}'!")
 	return skintext
 
 
-class LottoTipp(object):
+class LottoTipp:
 	def __init__(self, cfg):
 		self.cfg = cfg
 		self.resetTreffer()

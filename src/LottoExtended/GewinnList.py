@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #===============================================================================
 # LottoExtended Plugin by apostrophe 2009
 #
@@ -17,6 +16,8 @@ from Screens.MessageBox import MessageBox
 from Screens.Screen import Screen
 from .LottoTippConfig import lottoTippConfig, LottoTippConfigScreen
 from .LottoTipp import readSkin
+
+from . import _
 
 SYSTEMTAB = (  # seit 4.5.2013 mit 9 gewinnklassen
 	#+6 aus 7 neu							#pos	anzahl richtige klasse
@@ -90,22 +91,22 @@ def num2FormStr(nummer):
 		sign = '-'
 	else:
 		sign = ''
-	nummer = "%.2f" % nummer
+	nummer = f"{nummer:.2f}"
 	numstr = str(nummer).split('.')
 	ret1 = numstr[1]
-	l = len(numstr[0])
-	if l <= 3:
+	lennum = len(numstr[0])
+	if lennum <= 3:
 		ret = numstr[0]
 	else:
-		start = l % 3
-		loop = int(l / 3 + 1)
+		start = lennum % 3
+		loop = int(lennum / 3 + 1)
 		ret = numstr[0][:start]
 		for i in range(1, loop):
 			if start != 0:
 				ret += '.'
 			ret += numstr[0][start:start + 3]
 			start += 3
-	return "%s%s,%s" % (sign, ret, ret1)
+	return f"{sign}{ret},{ret1}"
 
 
 class GewinnListScreen(Screen):
@@ -122,7 +123,7 @@ class GewinnListScreen(Screen):
 			tag = "Samstag"
 		else:
 			tag = "Mittwoch"
-		self["auslosung"] = Label(" Auslosung vom %s, %s" % (tag, self.ziehung.datum.strftime("%d. %B %Y")))
+		self["auslosung"] = Label(" Auslosung vom {}, {}".format(tag, self.ziehung.datum.strftime("%d. %B %Y")))
 		self["dispsuper"] = Label(self.ziehung.strSuperzahl)
 		self["displotto"] = Label(" - ".join(self.ziehung.strLotto))
 		self["tipplist"] = List([])
@@ -169,7 +170,7 @@ class GewinnListScreen(Screen):
 			tag = "Samstag"
 		else:
 			tag = "Mittwoch"
-		self["auslosung"].text = " Auslosung vom %s, %s" % (tag, self.ziehung.datum.strftime("%d. %B %Y"))
+		self["auslosung"].text = " Auslosung vom {}, {}".format(tag, self.ziehung.datum.strftime("%d. %B %Y"))
 		self["dispsuper"].text = self.ziehung.strSuperzahl
 		self["displotto"].text = " - ".join(self.ziehung.strLotto)
 		self.setDates()
@@ -194,7 +195,7 @@ class GewinnListScreen(Screen):
 			if self.ziehung.lottoquote is None:
 				self["statuslabel"].setText("Quoten wurden noch nicht ermittelt")
 			if self.totalsumme:
-				self["statuslabel"].setText("Gewinnsumme: %s € - ohne Gewähr -" % num2FormStr(self.totalsumme))
+				self["statuslabel"].setText(f"Gewinnsumme: {num2FormStr(self.totalsumme)} € - ohne Gewähr -")
 		elif self.active == 0:
 			self["statuslabel"].setText("Keine Teilnahme an dieser Auslosung")
 		else:
@@ -257,11 +258,11 @@ class GewinnListScreen(Screen):
 		if participation == 0:
 			res.extend([" ausgesetzt", "", ""])
 		elif participation == -3:
-			res.extend([" Teiln. nur am %s" % tipp.getZiehungTagTxt(), "", ""])
+			res.extend([f" Teiln. nur am {tipp.getZiehungTagTxt()}", "", ""])
 		elif participation == -1:
-			res.extend([" Teilnahme ab %s" % tipp.getFirstDrawFormat("%d.%m.%Y"), "", ""])
+			res.extend([" Teilnahme ab {}".format(tipp.getFirstDrawFormat("%d.%m.%Y")), "", ""])
 		elif participation == -2:
-			res.extend([" Teilnahme bis %s" % tipp.getLastDrawFormat("%d.%m.%Y"), "", ""])
+			res.extend([" Teilnahme bis {}".format(tipp.getLastDrawFormat("%d.%m.%Y")), "", ""])
 		else:
 			res.append(" " + tipp.getZiehungTagKurz())
 			if tipp.getActSpiel77():
@@ -325,7 +326,7 @@ class GewinnListScreen(Screen):
 		if self["tipplist"].current:
 			tipp = self["tipplist"].current[0]
 			if tipp is not None:
-				self.session.openWithCallback(self.deleteCallback, MessageBox, ("Soll '%s' wirklich gelöscht werden?" % tipp.getName()))
+				self.session.openWithCallback(self.deleteCallback, MessageBox, (f"Soll '{tipp.getName()}' wirklich gelöscht werden?"))
 
 	def deleteCallback(self, result):
 		if result:
@@ -389,7 +390,7 @@ class GewinnListScreen(Screen):
 		self["key_blue"].text = ""
 		self["key_red"].text = ""
 		if isinstance(output, str):
-			self.session.open(MessageBox, "%s\n\n%s" % (text, output), type=MessageBox.TYPE_ERROR)
+			self.session.open(MessageBox, f"{text}\n\n{output}", type=MessageBox.TYPE_ERROR)
 
 	def downloadOK(self, datum):
 		self.newDrawing(datum)
@@ -427,15 +428,15 @@ class GewinnDetailList(List):
 		res[0] = " Teilname:"
 		participation = self.tipp.participation(self.ziehung.datum)
 		if participation == 1:
-			res[1] = " %s / ab %s / %s" % (self.tipp.getZiehungTagTxt(), self.tipp.getFirstDrawFormat("%d.%m.%Y"), self.tipp.getDrawingsText())
+			res[1] = " {} / ab {} / {}".format(self.tipp.getZiehungTagTxt(), self.tipp.getFirstDrawFormat("%d.%m.%Y"), self.tipp.getDrawingsText())
 		elif participation == 0:
 			res[1] = " keine Teilnahme"
 		elif participation == -3:
-			res[1] = " keine Teilnahme am %s" % self.tipp.getZiehungTagKurz()
+			res[1] = f" keine Teilnahme am {self.tipp.getZiehungTagKurz()}"
 		elif participation == -1:
-			res[1] = " ab %s" % self.tipp.getFirstDrawFormat("%d.%m.%y")
+			res[1] = " ab {}".format(self.tipp.getFirstDrawFormat("%d.%m.%y"))
 		else:
-			res[1] = " endete %s" % self.tipp.getLastDrawFormat("%d.%m.%y")  # participation -2
+			res[1] = " endete {}".format(self.tipp.getLastDrawFormat("%d.%m.%y"))  # participation -2
 		list.append(tuple(res))
 
 		def spiel77super6(teilgenommen, zahl, treffer):
@@ -458,9 +459,9 @@ class GewinnDetailList(List):
 					res[17] = " noch nicht bekannt"
 				else:
 					if treffer > 0:
-						res[17] = " %d richtige Endziffer(n)" % treffer
+						res[17] = f" {treffer} richtige Endziffer(n)"
 					else:
-						res[16] = " %d richtige Endziffer(n)" % treffer
+						res[16] = f" {treffer} richtige Endziffer(n)"
 			else:
 				res[16] = " keine Teilnahme"
 		if participation == 1:
@@ -484,11 +485,11 @@ class GewinnDetailList(List):
 						self.gewinn = True
 					if treffer[1] == 0:
 						if treffer[0] > 2:
-							res[17] = " %d Richtige" % treffer[0]
+							res[17] = f" {treffer[0]} Richtige"
 						else:
-							res[16] = " %d Richtige" % treffer[0]
+							res[16] = f" {treffer[0]} Richtige"
 					elif treffer[1] == 1:
-						res[17] = " %d Richtige + Superzahl %s" % (treffer[0], self.ziehung.strSuperzahl)
+						res[17] = f" {treffer[0]} Richtige + Superzahl {self.ziehung.strSuperzahl}"
 					num = 0
 					ix = 0
 					for valint in spiel:
@@ -524,7 +525,7 @@ class GewinnDetailScreen(Screen):
 			tag = "Samstag"
 		else:
 			tag = "Mittwoch"
-		self["auslosung"] = Label(" Auslosung vom %s, %s" % (tag, self.ziehung.datum.strftime("%d. %B %Y")))
+		self["auslosung"] = Label(" Auslosung vom {}, {}".format(tag, self.ziehung.datum.strftime("%d. %B %Y")))
 		self["displotto"] = Label(" - ".join(list(map(str, self.ziehung.strLotto))))
 		self["dispsuper"] = Label(self.ziehung.strSuperzahl)
 		self["detaillist"] = self.detaillist
@@ -561,7 +562,7 @@ class GewinnDetailScreen(Screen):
 			if not self.ziehung.lottoquote:
 				self["statuslabel"].setText("Quoten sind noch nicht ermittelt")
 			elif self.tipp.gewinnSumme or self.totalsumme:
-				self["statuslabel"].setText("Gewinn: %s € / %s € -ohne Gewähr-" % (num2FormStr(self.tipp.gewinnSumme), num2FormStr(self.totalsumme)))
+				self["statuslabel"].setText(f"Gewinn: {num2FormStr(self.tipp.gewinnSumme)} € / {num2FormStr(self.totalsumme)} € -ohne Gewähr-")
 		elif self.tipp.getTeilnahme(self.ziehung.datum.weekday()) != 1:
 			self["statuslabel"].setText("Keine Teilnahme an dieser Auslosung")
 		else:

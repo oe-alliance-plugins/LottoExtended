@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #===============================================================================
 # LottoExtended Plugin by apostrophe 2009
 #
@@ -19,6 +18,7 @@ from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from .LottoTipp import LottoTipp
 from .LottoTipp import readSkin
+from . import _
 
 
 class LottoSelection(ConfigSelection):
@@ -191,7 +191,7 @@ class LottoConfigSequence(ConfigSequence):
 		self.system.value = str(count)
 
 
-class __LottoTippConfig(object):
+class __LottoTippConfig:
 	def __init__(self):
 		self.tipplist = []
 		config.plugins.lotto = ConfigSubsection()
@@ -203,7 +203,7 @@ class __LottoTippConfig(object):
 	def new(self):  # Add a new tipp or load a configsection if existing
 		newTippConfigSubsection = ConfigSubsection()
 		config.plugins.lotto.tipps.append(newTippConfigSubsection)
-		newTippConfigSubsection.name = ConfigText("Tipp %s" % self.getTippCount(), False)
+		newTippConfigSubsection.name = ConfigText(f"Tipp {self.getTippCount()}", False)
 		if newTippConfigSubsection.name.value == newTippConfigSubsection.name.default:
 			newTippConfigSubsection.name.default = ""
 		newTippConfigSubsection.losnummer = ConfigInteger(0000000, (0000000, 9999999))
@@ -372,12 +372,12 @@ class LottoTippConfigScreen(ConfigListScreen, Screen):
 			dups = []
 			for i in spiel.value:
 				if i == 0:
-					self.session.open(MessageBox, _(("Ungültige Zahl (0) in %s\n\nNur 01 - 49 erlaubt." % (name))), MessageBox.TYPE_WARNING, timeout=3, close_on_any_key=True)
+					self.session.open(MessageBox, _(f"Ungültige Zahl (0) in {name}\n\nNur 01 - 49 erlaubt."), MessageBox.TYPE_WARNING, timeout=3, close_on_any_key=True)
 					return False
 				if dups.count(i) == 0 and spiel.value.count(i) > 1:  # doppelte Werte nicht zulassen
 					dups.append(i)
 			if len(dups) > 0:
-				self.session.open(MessageBox, _(("Doppelte Zahl(en) in %s:\n\n%s" % (name, str(dups)))), MessageBox.TYPE_WARNING, timeout=3, close_on_any_key=True)
+				self.session.open(MessageBox, _(f"Doppelte Zahl(en) in {name}:\n\n{str(dups)}"), MessageBox.TYPE_WARNING, timeout=3, close_on_any_key=True)
 				return False
 		return True
 
@@ -386,7 +386,7 @@ class LottoTippConfigScreen(ConfigListScreen, Screen):
 		if isinstance(spiel, LottoConfigSequence):
 			if spiel._value != spiel.default:
 				name = self["config"].getCurrent()[0]
-				self.session.openWithCallback(self.deleteSpiel, MessageBox, ("Soll '%s' wirklich gelöscht werden?" % name), MessageBox.TYPE_YESNO, timeout=20, default=False)
+				self.session.openWithCallback(self.deleteSpiel, MessageBox, (f"Soll '{name}' wirklich gelöscht werden?"), MessageBox.TYPE_YESNO, timeout=20, default=False)
 
 	def deleteSpiel(self, result):
 		if result:

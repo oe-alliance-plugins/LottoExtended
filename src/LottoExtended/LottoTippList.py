@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #===============================================================================
 # LottoExtended Plugin by apostrophe 2009
 #
@@ -82,7 +81,7 @@ class LottoTippListScreen(Screen):
 	def keyDelete(self):
 		if self.tipplist.current:
 			tipp = self.tipplist.current[0]
-			self.session.openWithCallback(self.deleteCallback, MessageBox, ("Soll '%s' wirklich gelöscht werden?" % tipp.getName()))
+			self.session.openWithCallback(self.deleteCallback, MessageBox, (f"Soll '{tipp.getName()}' wirklich gelöscht werden?"))
 
 	def deleteCallback(self, result):
 		index = self.tipplist.index
