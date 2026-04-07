@@ -18,7 +18,6 @@ from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from .LottoTipp import LottoTipp
 from .LottoTipp import readSkin
-from . import _
 
 
 class LottoSelection(ConfigSelection):
@@ -295,7 +294,7 @@ class LottoTippConfigScreen(ConfigListScreen, Screen):
 			"up": self.up,
 			"down": self.down
 		}, -2)
-		self["key_red"] = Button(_("Abbrechen"))
+		self["key_red"] = Button("Abbrechen")
 		self["key_green"] = Button("Abspeichern")
 		self["key_yellow"] = Button("Erweitert")
 		self["key_blue"] = Button("Tipp löschen")
@@ -372,12 +371,12 @@ class LottoTippConfigScreen(ConfigListScreen, Screen):
 			dups = []
 			for i in spiel.value:
 				if i == 0:
-					self.session.open(MessageBox, _(f"Ungültige Zahl (0) in {name}\n\nNur 01 - 49 erlaubt."), MessageBox.TYPE_WARNING, timeout=3, close_on_any_key=True)
+					self.session.open(MessageBox, f"Ungültige Zahl (0) in {name}\n\nNur 01 - 49 erlaubt.", MessageBox.TYPE_WARNING, timeout=3, close_on_any_key=True)
 					return False
 				if dups.count(i) == 0 and spiel.value.count(i) > 1:  # doppelte Werte nicht zulassen
 					dups.append(i)
 			if len(dups) > 0:
-				self.session.open(MessageBox, _(f"Doppelte Zahl(en) in {name}:\n\n{str(dups)}"), MessageBox.TYPE_WARNING, timeout=3, close_on_any_key=True)
+				self.session.open(MessageBox, f"Doppelte Zahl(en) in {name}:\n\n{str(dups)}", MessageBox.TYPE_WARNING, timeout=3, close_on_any_key=True)
 				return False
 		return True
 
