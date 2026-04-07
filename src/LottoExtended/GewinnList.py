@@ -17,8 +17,6 @@ from Screens.Screen import Screen
 from .LottoTippConfig import lottoTippConfig, LottoTippConfigScreen
 from .LottoTipp import readSkin
 
-from . import _
-
 SYSTEMTAB = (  # seit 4.5.2013 mit 9 gewinnklassen
 	# +6 aus 7 neu							#pos	anzahl richtige klasse
 	((5, 0, 0, 0, 0, 0, 0, 0, 0),			# 0		2+
@@ -361,11 +359,11 @@ class GewinnListScreen(Screen):
 		if self.nextDate == self.currDate:
 			self["key_blue"].text = ""
 		else:
-			self["key_blue"].text = self.nextDate.strftime(_("%d.%m.%Y"))
+			self["key_blue"].text = self.nextDate.strftime("%d.%m.%Y")
 		if self.prevDate == self.currDate:
 			self["key_red"].text = ""
 		else:
-			self["key_red"].text = self.prevDate.strftime(_("%d.%m.%Y"))
+			self["key_red"].text = self.prevDate.strftime("%d.%m.%Y")
 
 	def prevDraw(self):
 		if self.currDate == self.prevDate:
@@ -381,7 +379,7 @@ class GewinnListScreen(Screen):
 		if datum in self.ziehungen.drawings:
 			self.newDrawing(datum)
 		else:
-			self["statuslabel"].setText(_("Download gestartet"))
+			self["statuslabel"].setText("Download gestartet")
 			self.ziehungen.download(datum, self.downloadOK, self.downloadFailed)
 
 	def downloadFailed(self, text, output):

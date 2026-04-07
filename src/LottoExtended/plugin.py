@@ -21,7 +21,6 @@ from Screens.Screen import Screen
 from .LottoTippList import LottoTippListScreen
 from .GewinnList import GewinnListScreen, num2FormStr
 from .LottoTipp import readSkin
-from . import _
 
 
 lotto_pluginversion = '16.01.2023'
@@ -430,11 +429,11 @@ class LottoMain(Screen):
 		if self.nextDate == self.currDate:
 			self["key_blue"].text = ""
 		else:
-			self["key_blue"].text = self.nextDate.strftime(_("%d.%m.%Y"))
+			self["key_blue"].text = self.nextDate.strftime("%d.%m.%Y")
 		if self.prevDate == self.currDate:
 			self["key_red"].text = ""
 		else:
-			self["key_red"].text = self.prevDate.strftime(_("%d.%m.%Y"))
+			self["key_red"].text = self.prevDate.strftime("%d.%m.%Y")
 
 
 def main(session, **kwargs):
@@ -443,4 +442,4 @@ def main(session, **kwargs):
 
 def Plugins(**kwargs):
 	return PluginDescriptor(
-		name="LottoExtended", description=_("Tippscheinmanager, Gewinnauswertung, Gewinnzahlen, Quoten"), where=[PluginDescriptor.WHERE_PLUGINMENU], icon="plugin.png", fnc=main)
+		name="LottoExtended", description="Tippscheinmanager, Gewinnauswertung, Gewinnzahlen, Quoten", where=[PluginDescriptor.WHERE_PLUGINMENU], icon="plugin.png", fnc=main)
