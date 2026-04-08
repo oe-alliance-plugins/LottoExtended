@@ -121,7 +121,7 @@ class GewinnListScreen(Screen):
 			tag = "Samstag"
 		else:
 			tag = "Mittwoch"
-		self["auslosung"] = Label(" Auslosung vom {}, {}".format(tag, self.ziehung.datum.strftime("%d. %B %Y")))
+		self["auslosung"] = Label(f" Auslosung vom {tag}, {self.ziehung.datum.strftime('%d. %B %Y')}")
 		self["dispsuper"] = Label(self.ziehung.strSuperzahl)
 		self["displotto"] = Label(" - ".join(self.ziehung.strLotto))
 		self["tipplist"] = List([])
@@ -168,7 +168,7 @@ class GewinnListScreen(Screen):
 			tag = "Samstag"
 		else:
 			tag = "Mittwoch"
-		self["auslosung"].text = " Auslosung vom {}, {}".format(tag, self.ziehung.datum.strftime("%d. %B %Y"))
+		self["auslosung"].text = f" Auslosung vom {tag}, {self.ziehung.datum.strftime('%d. %B %Y')}"
 		self["dispsuper"].text = self.ziehung.strSuperzahl
 		self["displotto"].text = " - ".join(self.ziehung.strLotto)
 		self.setDates()
@@ -523,7 +523,7 @@ class GewinnDetailScreen(Screen):
 			tag = "Samstag"
 		else:
 			tag = "Mittwoch"
-		self["auslosung"] = Label(" Auslosung vom {}, {}".format(tag, self.ziehung.datum.strftime("%d. %B %Y")))
+		self["auslosung"] = Label(f" Auslosung vom {tag}, {self.ziehung.datum.strftime("%d. %B %Y")}")
 		self["displotto"] = Label(" - ".join(list(map(str, self.ziehung.strLotto))))
 		self["dispsuper"] = Label(self.ziehung.strSuperzahl)
 		self["detaillist"] = self.detaillist
