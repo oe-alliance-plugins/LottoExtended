@@ -19,11 +19,9 @@ from Components.Label import Label
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
 from .LottoTippList import LottoTippListScreen
-from .GewinnList import GewinnListScreen, num2FormStr
+from .GewinnList import GewinnListScreen, num2formStr
 from .LottoTipp import readSkin
-
-
-lotto_pluginversion = '16.01.2023'
+from . import __version__
 
 
 def str2floatQuotes(strList):
@@ -188,7 +186,7 @@ class Ziehungen:
 					einsatz = None
 					if lottery["totalStake"] != "None":
 						try:
-							einsatz = num2FormStr(float(lottery["totalStake"]) / 100)
+							einsatz = num2formStr(float(lottery["totalStake"]) / 100)
 						except Exception:
 							einsatz = None
 					if lottery["winningClasses"]:
@@ -198,8 +196,8 @@ class Ziehungen:
 								quotes.append("unbesetzt")
 								winners.append("0")
 							else:
-								quotes.append(num2FormStr(float(lvl['quote']) / 100))
-								winners.append(num2FormStr(float(lvl['winnings'])).split(',')[0])
+								quotes.append(num2formStr(float(lvl['quote']) / 100))
+								winners.append(num2formStr(float(lvl['winnings'])).split(',')[0])
 					else:
 						pass
 					if typ == "LOTTO":
@@ -258,7 +256,7 @@ class LottoMain(Screen):
 		self["key_yellow"] = Button("Manager")
 		self["key_blue"] = Button()
 		self["statuslabel"] = Label()
-		self["version"] = Label(f"Version {lotto_pluginversion}")
+		self["version"] = Label(f"Version {__version__}")
 		self["spiel77"] = Label("")
 		self["super6"] = Label("")
 		self["auslosung"] = Label("")

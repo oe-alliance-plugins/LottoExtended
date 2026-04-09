@@ -43,7 +43,7 @@
     <eLabel backgroundColor="#00f2f2f9" position="1276,220" size="3,499" />
     <eLabel backgroundColor="#00f2f2f9" position="1359,220" size="3,499" />
     <eLabel backgroundColor="#00f2f2f9" position="15,720" size="1425,3" />
-    <widget name="statuslabel" position="15,732" size="1425,37" font="Regular;33" halign="center" valign="center" />
+    <widget name="statuslabel" position="15,732" size="1425,40" font="Regular;33" halign="center" valign="center" />
     <widget source="tipplist" render="Listbox" position="15,270" size="1425,450" scrollbarMode="showNever">
       <convert type="TemplatedMultiContent">
         {"template": [
@@ -115,7 +115,7 @@
       </convert>
     </widget>
     <eLabel backgroundColor="#00f2f2f9" position="15,720" size="1200,1" />
-    <widget name="statuslabel" position="15,732" size="1200,37" font="Regular;33" halign="center" valign="center" />
+    <widget name="statuslabel" position="15,732" size="1200,40" font="Regular;33" halign="center" valign="center" />
   </screen>
 
   <screen name="LottoMain" position="center,center" size="1455,780" title="LottoExtended">
@@ -144,7 +144,7 @@
     <eLabel name="lQuuotaS77" position="772,255" size="240,36" zPosition="0" text="Quote" foregroundColor="#E5B243" font="Regular;30" halign="right" valign="center" />
     <eLabel name="lWinnersS6" position="1057,255" size="142,36" zPosition="0" text="Gewinne" foregroundColor="#E5B243" font="Regular;30" halign="right" valign="center" />
     <eLabel name="lQuotaS6" position="1207,255" size="240,36" zPosition="0" text="Quote" foregroundColor="#E5B243" font="Regular;30" halign="right" valign="center" />
-    <widget name="statuslabel" position="15,732" size="1425,37" zPosition="0" font="Regular;33" halign="center" />
+    <widget name="statuslabel" position="15,732" size="1425,40" zPosition="0" font="Regular;33" halign="center" />
     <eLabel backgroundColor="#00f2f2f9" position="127,132" size="1318,3" zPosition="5" />
     <eLabel backgroundColor="#00f2f2f9" position="127,222" size="1318,3" zPosition="5" />
     <eLabel backgroundColor="#00f2f2f9" position="600,132" size="3,588" zPosition="5" />
@@ -182,7 +182,7 @@
     <eLabel backgroundColor="grey" position="15,75" size="1200,1" />
     <widget name="config" position="15,82" size="1200,630" font="Regular;30" itemHeight="36" valign="center" enableWrapAround="1" scrollbarMode="showOnDemand" />
     <eLabel backgroundColor="grey" position="15,720" size="1200,1" />
-    <widget name="statuslabel" position="15,732" size="1200,37" font="Regular;33" halign="center" />
+    <widget name="statuslabel" position="15,732" size="1200,40" font="Regular;33" halign="center" />
   </screen>
 
   <screen name="LottoTippListScreen" position="center,120" size="1230,780" title="LottoExtended - Wähle einen Spielschein">
